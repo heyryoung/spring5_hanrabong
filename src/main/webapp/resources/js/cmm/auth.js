@@ -28,7 +28,7 @@ auth = (()=>{
 										cpw : $('#cpw').val(),
 										cname : $('#cname').val()
 								}
-								if(existId(data.cid)==='true')
+								if(existId(data.cid))
 									alert(existId(data.cid))
 									join(data)
 							} 
@@ -44,7 +44,6 @@ auth = (()=>{
 	}
 	
 	let join = data=>{
-		alert(data)
 				$.ajax({
 					url : _+'/hcusts/', 
 					type : 'POST',
@@ -70,10 +69,10 @@ auth = (()=>{
 			success : d =>{
 				if (d.msg==='SUCCESS') {
 					alert('없는 아이디 입니다 ' + d.msg);
-					return 'true';
+					return true;
 				}else{
 					alert('있는 아이디 입니다.');	
-				return 'false';
+				return false;
 				}
 			},
 			error : e =>{
