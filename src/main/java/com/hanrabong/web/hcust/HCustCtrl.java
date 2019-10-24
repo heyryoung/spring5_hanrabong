@@ -35,11 +35,9 @@ public class HCustCtrl {
 	
 	
 	@GetMapping("/{cid}/exist")
-	public Map<?,?> existId(@PathVariable String cid){
+	public String existId(@PathVariable String cid){
 		IFunction<String, Integer> p  =o -> hCustMapper.existId(cid); 
-		map.clear();
-		map.put("msg",(p.apply(cid) ==0) ? "SUCCESS" : "FAIL");
-		return map;
+		return "SUCCESS";
 	}
 	
 	

@@ -28,10 +28,7 @@ auth = (()=>{
 										cpw : $('#cpw').val(),
 										cname : $('#cname').val()
 								}
-								if(existId(data.cid))
-									join(data)
-								else 
-									alert('회원 가입 실패')
+				         		existId(data)
 							} 
 						})
 						.addClass('btn btn-primary btn-lg btn-block')
@@ -62,14 +59,15 @@ auth = (()=>{
 				})    
 	}	
 	
-	let existId = x =>{
+	let existId = data =>{
 		$.ajax({
-			url : _+'/hcusts/'+x +'/exist', 
+			url : _+'/hcusts/'+data.cid +'/exist', 
 			type : 'GET',
 			contentType : 'application/json',
 			success : d =>{
-				if (d.msg==='SUCCESS') {
-					alert('없는 아이디 입니다 ' + d.msg);
+				if (d==='SUCCESS') {
+					alert('없는 아이디 입니다 ' + d);
+					join(data)
 					return true;
 				}else{
 					alert('있는 아이디 입니다.');	
