@@ -12,11 +12,11 @@
 		SELECT MAX(CNUM)  CNUM FROM HCUST order by cnum desc
 	</select>
 
-   <select id="selectHCustByCNum"  resultType="com.hanrabong.web.hcust.HCust">
+   <select id="selectHCustByCNum"  resultType="hcust">
       SELECT * FROM HCUST WHERE CNUM LIKE #{cnum} 
    </select>
    
-     <select id="selectByCidCpw"  resultType="com.hanrabong.web.hcust.HCust">
+     <select id="selectByCidCpw"  resultType="hcust">
       SELECT * FROM HCUST WHERE CID LIKE #{cid} AND CPW LIKE #{cpw}
    </select>
    

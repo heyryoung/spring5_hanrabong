@@ -5,6 +5,6 @@
        <setting  name="mapUnderscoreToCamelCase"  value="true"/>
     </settings>
 <typeAliases>
-  <typeAlias alias="Author" type="com.hanrabong.web.hcust.HCust"/>
+  <typeAlias alias="hcust" type="com.hanrabong.web.hcust.HCust"/>
 </typeAliases>    
 </configuration>
