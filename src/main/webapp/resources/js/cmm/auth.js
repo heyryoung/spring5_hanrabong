@@ -118,7 +118,7 @@ auth = (()=>{
 		.appendTo('#btn_login')		
 	}
 	
-	let mypage = d=>{
+	let brd_home = d=>{
 		let x = {css : $.css(), img : $.img(), js:$.js(), resultData: d}
 		$('head').html(auth_vue.brd_head(x))
 		$('body')
@@ -126,7 +126,7 @@ auth = (()=>{
 		.html(auth_vue.brd_body(x))
 	}
 	
-	return {onCreate, join, login,mypage}
+	return {onCreate, join, login,mypage,brd_home}
 })();
 
 

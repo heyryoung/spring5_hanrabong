@@ -60,12 +60,12 @@ public class HCustCtrl {
 		return f.apply(param);
 	}
 	
-/*	@GetMapping("/{cid}")
+	@GetMapping("/{cid}")
 	public HCust searchHCustById(@PathVariable String cid ,@RequestBody HCust param) {
 		IFunction<HCust,HCust> f = t ->  hCustMapper.selectByCidCpw(param); 
 		return f.apply(param);
 	}
-	*/
+	
 	@PutMapping("/{cid}")
 	public String updateHCust(@PathVariable String cid ,@RequestBody HCust param) {
 		IConsumer<HCust> c = t->hCustMapper.insertHCust(param);
