@@ -29,8 +29,9 @@ auth = (()=>{
 										cname : $('#cname').val()
 								}
 								if(existId(data.cid))
-									alert(existId(data.cid))
 									join(data)
+								else 
+									alert('회원 가입 실패')
 							} 
 						})
 						.addClass('btn btn-primary btn-lg btn-block')
