@@ -3,11 +3,12 @@ var auth = auth || {}
 
 auth = (()=>{
 	const WHEN_ERR = '호출하는 JS 파일을 찾지 못했습니다.'
-	let _,js,auth_vuejs;
+	let _,js,auth_vuejs,brd_vuejs;
 	let init = ()=>{
 		_=$.ctx();
 		js=$.js();
 		auth_vuejs = js+'/vue/auth_vue.js';
+		brd_vuejs= js+'/vue/brd_vue.js';
 	} 
 	let onCreate =()=>{
 		init();
@@ -106,7 +107,7 @@ auth = (()=>{
 						contentType : 'application/json',
 						success : d =>{
 								alert(d.cid + '님 환영합니다.')
-								mypage(d)
+								brd_home(d)
 						},
 						error : e =>{
 							alert('AJAX ERROR' )
@@ -120,13 +121,18 @@ auth = (()=>{
 	
 	let brd_home = d=>{
 		let x = {css : $.css(), img : $.img(), js:$.js(), resultData: d}
-		$('head').html(auth_vue.brd_head(x))
-		$('body')
-		.addClass('text-center')
-		.html(auth_vue.brd_body(x))
+		$.getScript(brd_vuejs).done(()=>{
+			$('head').html(brd_vue.brd_head(x))
+			$('body')
+			.addClass('text-center')
+			.html(brd_vue.brd_body(x))
+		}).fail(()=>{
+			
+		})
+
 	}
 	
-	return {onCreate, join, login,mypage,brd_home}
+	return {onCreate, join, login,brd_home}
 })();
 
 
