@@ -1,5 +1,6 @@
 package com.hanrabong.web.cmm;
 
-public interface IConsumer {
-	public void accept(Object o);
+@FunctionalInterface
+public interface IConsumer<T> {
+	public void accept(T t);
 }

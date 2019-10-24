@@ -39,7 +39,7 @@ auth = (()=>{
 										cname : $('#cname').val()
 								}
 								$.ajax({
-									url : _+'/hcust/join', 
+									url : _+'/hcusts/', 
 									type : 'POST',
 									dataType : 'json',
 									data: JSON.stringify(data) , 
@@ -73,7 +73,7 @@ auth = (()=>{
 					let data = { cid :  $('#cid').val() ,
 							cpw : $('#cpw').val()}
 					$.ajax({
-						url : _+'/hcust/login', 
+						url : _+'/hcusts/login', 
 						type : 'POST',
 						dataType : 'json',
 						data: JSON.stringify(data) , 
