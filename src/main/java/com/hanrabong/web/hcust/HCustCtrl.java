@@ -50,7 +50,7 @@ public class HCustCtrl {
 		IConsumer<HCust> c = t->hCustMapper.insertHCust(param);
 		c.accept(param);
 		map.clear();
-		map.put("msg", "success");
+		map.put("msg", "SUCCESS");
 		return map;
 	}
 	

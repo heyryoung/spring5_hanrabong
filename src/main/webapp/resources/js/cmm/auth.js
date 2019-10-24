@@ -15,7 +15,26 @@ auth = (()=>{
         	setContentView()
     		$('#a_go_join').click(e=>{
          		e.preventDefault()
-         		join()
+  				$.getScript(auth_vuejs)
+					$('head').html(auth_vue.join_head())
+					$('body').html(auth_vue.join_body())
+					$('<button>',{
+							text : 'Continue to checkout' , 
+							href: '#' ,
+							click : e=>{
+				         		e.preventDefault()
+								let data = { 
+										cid :  $('#cid').val() ,
+										cpw : $('#cpw').val(),
+										cname : $('#cname').val()
+								}
+								if(existId(data.cid)==='true')
+									alert(existId(data.cid))
+									join(data)
+							} 
+						})
+						.addClass('btn btn-primary btn-lg btn-block')
+						.appendTo('#btn_join')       		
     		})
         }).fail(()=>{alert(WHEN_ERR)})
 	}
@@ -24,45 +43,26 @@ auth = (()=>{
 		login()
 	}
 	
-	let join = ()=>{
-				$.getScript(auth_vuejs)
-					$('head').html(auth_vue.join_head())
-					$('body').html(auth_vue.join_body())
-					$('<button>',{
-							text : 'Continue to checkout' , 
-							href: '#' ,
-							click : e=>{
-								e.preventDefault();
-								let data = { 
-										cid :  $('#cid').val() ,
-										cpw : $('#cpw').val(),
-										cname : $('#cname').val()
-								}
-								$.ajax({
-									url : _+'/hcusts/', 
-									type : 'POST',
-									dataType : 'json',
-									data: JSON.stringify(data) , 
-									contentType : 'application/json',
-									success : d =>{
-										alert('AJAX 성공 ' + d.msg)
-										if (d.msg==='SUCCESS') 
-											login()
-										else
-											alert('가입에 실패하였습니다.');	
-									},
-									error : e =>{
-										alert('AJAX실패' )
-									}
-								})    
-							} 
-						})
-						.addClass('btn btn-primary btn-lg btn-block')
-						.appendTo('#btn_join')
+	let join = data=>{
+		alert(data)
+				$.ajax({
+					url : _+'/hcusts/', 
+					type : 'POST',
+					dataType : 'json',
+					data: JSON.stringify(data) , 
+					contentType : 'application/json',
+					success : d =>{
+						alert('AJAX 성공 ' + d.msg)
+						if (d.msg==='SUCCESS') 
+							login()
+					},
+					error : e =>{
+						alert('AJAX실패' )
+					}
+				})    
 	}	
 	
 	let existId = x =>{
-
 		$.ajax({
 			url : _+'/hcusts/'+x +'/exist', 
 			type : 'GET',
@@ -70,18 +70,17 @@ auth = (()=>{
 			success : d =>{
 				if (d.msg==='SUCCESS') {
 					alert('없는 아이디 입니다 ' + d.msg);
-					return true;
+					return 'true';
 				}else{
 					alert('있는 아이디 입니다.');	
-				return false;
+				return 'false';
 				}
 			},
 			error : e =>{
 				alert('error' )
-				return false;
+				return 'false';
 			}
 		})    
-		
 	}
 	
 	
@@ -121,10 +120,10 @@ auth = (()=>{
 	
 	let mypage = d=>{
 		let x = {css : $.css(), img : $.img(), js:$.js(), resultData: d}
-		$('head').html(auth_vue.mypage_head(x))
+		$('head').html(auth_vue.brd_head(x))
 		$('body')
 		.addClass('text-center')
-		.html(auth_vue.mypage_body(x))
+		.html(auth_vue.brd_body(x))
 	}
 	
 	return {onCreate, join, login,mypage}
