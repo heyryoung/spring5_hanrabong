@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hanrabong.web.cmm.IConsumer;
 import com.hanrabong.web.cmm.IFunction;
+import com.hanrabong.web.cmm.IPredicate;
+import com.hanrabong.web.cmm.ISupplier;
 import com.hanrabong.web.utl.Printer;
 
 import lombok.extern.log4j.Log4j;
@@ -31,12 +33,25 @@ public class HCustCtrl {
 	@Autowired Printer printer;
 	@Autowired HCustMapper hCustMapper;
 	
+	
+	@GetMapping("/{cid}/exist")
+	public Map<?,?> existId(@PathVariable String cid){
+		IFunction<String, Integer> p  =o -> hCustMapper.existId(cid); 
+		map.clear();
+		map.put("msg",(p.apply(cid) ==0) ? "SUCCESS" : "FAIL");
+		return map;
+	}
+	
+	
 	@PostMapping("/")
-	public String join(@RequestBody HCust param) {
-		printer.accept("람다 프린터가 출력한 값"+param.getCid() +","+ param.getCpw());
+	public Map<?,?> join(@RequestBody HCust param) {
+		ISupplier<Integer> n = ()-> hCustMapper.lastCNum();
+		param.setCnum(String.valueOf(n.get()+1));
 		IConsumer<HCust> c = t->hCustMapper.insertHCust(param);
 		c.accept(param);
-		return "SUCCESS";
+		map.clear();
+		map.put("msg", "success");
+		return map;
 	}
 	
 	@PostMapping("/{cid}")
@@ -45,12 +60,12 @@ public class HCustCtrl {
 		return f.apply(param);
 	}
 	
-	@GetMapping("/{cid}")
+/*	@GetMapping("/{cid}")
 	public HCust searchHCustById(@PathVariable String cid ,@RequestBody HCust param) {
 		IFunction<HCust,HCust> f = t ->  hCustMapper.selectByCidCpw(param); 
 		return f.apply(param);
 	}
-	
+	*/
 	@PutMapping("/{cid}")
 	public String updateHCust(@PathVariable String cid ,@RequestBody HCust param) {
 		IConsumer<HCust> c = t->hCustMapper.insertHCust(param);

@@ -45,11 +45,14 @@ auth = (()=>{
 									data: JSON.stringify(data) , 
 									contentType : 'application/json',
 									success : d =>{
-										alert(d.cid + '님 환영합니다.')
-										login()
+										alert('AJAX 성공 ' + d.msg)
+										if (d.msg==='SUCCESS') 
+											login()
+										else
+											alert('가입에 실패하였습니다.');	
 									},
 									error : e =>{
-										alert('AJAX실패' + url)
+										alert('AJAX실패' )
 									}
 								})    
 							} 
@@ -57,6 +60,30 @@ auth = (()=>{
 						.addClass('btn btn-primary btn-lg btn-block')
 						.appendTo('#btn_join')
 	}	
+	
+	let existId = x =>{
+
+		$.ajax({
+			url : _+'/hcusts/'+x +'/exist', 
+			type : 'GET',
+			contentType : 'application/json',
+			success : d =>{
+				if (d.msg==='SUCCESS') {
+					alert('없는 아이디 입니다 ' + d.msg);
+					return true;
+				}else{
+					alert('있는 아이디 입니다.');	
+				return false;
+				}
+			},
+			error : e =>{
+				alert('error' )
+				return false;
+			}
+		})    
+		
+	}
+	
 	
 	let login = ()=>{
 
@@ -73,7 +100,7 @@ auth = (()=>{
 					let data = { cid :  $('#cid').val() ,
 							cpw : $('#cpw').val()}
 					$.ajax({
-						url : _+'/hcusts/login', 
+						url : _+'/hcusts/'+data.cid, 
 						type : 'POST',
 						dataType : 'json',
 						data: JSON.stringify(data) , 

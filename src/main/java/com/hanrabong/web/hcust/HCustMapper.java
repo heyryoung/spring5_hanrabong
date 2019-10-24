@@ -6,5 +6,7 @@ import org.springframework.stereotype.Repository;
 public interface HCustMapper {
  public void insertHCust(HCust hCust);
  public HCust selectByCidCpw(HCust hCust);
+ public int lastCNum();
+public int existId(String cid);
 		
 }
