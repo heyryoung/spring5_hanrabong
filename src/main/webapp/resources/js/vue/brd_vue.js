@@ -13,6 +13,7 @@ brd_vue ={
               '    <!-- Bootstrap core CSS -->'+
               '<link href="https://getbootstrap.com/docs/4.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">'+
               '    <style>'+
+              '.container{text-align : left;}'+
               '      .bd-placeholder-img {'+
               '        font-size: 1.125rem;'+
               '        text-anchor: middle;'+
@@ -85,7 +86,7 @@ brd_vue ={
               '</div>'+
               '<main role="main" class="container">'+
                 '<div class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm">'+
-                  '<img class="mr-3" src="/docs/4.3/assets/brand/bootstrap-outline.svg" alt="" width="48" height="48">'+
+                  '<img class="mr-3" src="https://getbootstrap.com/docs/4.3/assets/brand/bootstrap-outline.svg" alt="" width="48" height="48">'+
               '    <div class="lh-100">'+
               '      <h6 class="mb-0 text-white lh-100">Bootstrap</h6>'+
               '      <small>Since 2011</small>'+

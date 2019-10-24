@@ -16,7 +16,6 @@ auth = (()=>{
         	setContentView()
     		$('#a_go_join').click(e=>{
          		e.preventDefault()
-  				$.getScript(auth_vuejs)
 					$('head').html(auth_vue.join_head())
 					$('body').html(auth_vue.join_body())
 					$('<button>',{
@@ -53,7 +52,7 @@ auth = (()=>{
 					data: JSON.stringify(data) , 
 					contentType : 'application/json',
 					success : d =>{
-						alert('AJAX 성공 ' + d.msg)
+						alert('회원가입  ' + d.msg)
 						if (d.msg==='SUCCESS') 
 							login()
 					},
@@ -119,13 +118,13 @@ auth = (()=>{
 		.appendTo('#btn_login')		
 	}
 	
+	
+	
 	let brd_home = d=>{
 		let x = {css : $.css(), img : $.img(), js:$.js(), resultData: d}
 		$.getScript(brd_vuejs).done(()=>{
 			$('head').html(brd_vue.brd_head(x))
-			$('body')
-			.addClass('text-center')
-			.html(brd_vue.brd_body(x))
+			$('body').html(brd_vue.brd_body(x))
 		}).fail(()=>{
 			
 		})
