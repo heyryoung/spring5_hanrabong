@@ -3,12 +3,14 @@ var auth = auth || {}
 
 auth = (()=>{
 	const WHEN_ERR = '호출하는 JS 파일을 찾지 못했습니다.'
-	let _,js,auth_vuejs,brd_vuejs;
+	let _,js,auth_vuejs,brd_vuejs,brd_js, router_js;
 	let init = ()=>{
 		_=$.ctx();
 		js=$.js();
 		auth_vuejs = js+'/vue/auth_vue.js';
 		brd_vuejs= js+'/vue/brd_vue.js';
+		brd_js= js+'/brd/brd.js';
+		router_js = js + '/cmm/router.js';
 	} 
 	let onCreate =()=>{
 		init();
@@ -18,6 +20,26 @@ auth = (()=>{
          		e.preventDefault()
 					$('head').html(auth_vue.join_head())
 					$('body').html(auth_vue.join_body())
+					$('#cid').keyup(()=>{
+							if($('#cid').val().length > 2){
+								$.ajax({
+									url : _+'/hcusts/'+$('#cid').val()+'/exist', 
+									contentType : 'application/json',
+									success : d =>{
+										if (d.msg==='SUCCESS') {
+											$('#dupl_check').val('사용가능한 ID 입니다').css('color','green');
+										}else{
+											$('#dupl_check').val('사용불가능한 ID입니다.').css('color','red');	
+										}
+									},
+									error : e =>{
+										alert('error' )
+										return 'false';
+									}
+								})  
+							}
+						});
+									
 					$('<button>',{
 							text : 'Continue to checkout' , 
 							href: '#' ,
@@ -38,6 +60,10 @@ auth = (()=>{
 	}
 	
 	let setContentView = ()=>{
+		$('head').html(auth_vue.login_head( {css : $.css(), img : $.img(), js:$.js() }))
+		$('body')
+		.addClass('text-center')
+		.html(auth_vue.login_body( {css : $.css(), img : $.img(), js:$.js() }))
 		login()
 	}
 	
@@ -51,6 +77,10 @@ auth = (()=>{
 					success : d =>{
 						alert('회원가입  ' + d.msg)
 						if (d.msg==='SUCCESS') 
+							$('head').html(auth_vue.login_head( {css : $.css(), img : $.img(), js:$.js() }))
+							$('body')
+							.addClass('text-center')
+							.html(auth_vue.login_body( {css : $.css(), img : $.img(), js:$.js() }))
 							login()
 					},
 					error : e =>{
@@ -65,8 +95,7 @@ auth = (()=>{
 			type : 'GET',
 			contentType : 'application/json',
 			success : d =>{
-				if (d==='SUCCESS') {
-					alert('없는 아이디 입니다 ' + d);
+				if (d.msg==='SUCCESS') {
 					join(data)
 					return true;
 				}else{
@@ -81,21 +110,14 @@ auth = (()=>{
 		})    
 	}
 	
-	
 	let login = ()=>{
-
-		let x = {css : $.css(), img : $.img(), js:$.js() }
-		$('head').html(auth_vue.login_head(x))
-		$('body')
-		.addClass('text-center')
-		.html(auth_vue.login_body(x))
 		$('<button>',{
 			type: "submit",
 			text : "Log In",
-			click: 	e=>{									
+			click: 	e=>{				
 					e.preventDefault()
-					let data = { cid :  $('#cid').val() ,
-							cpw : $('#cpw').val()}
+				let data = { cid :  $('#cid').val() ,
+						cpw : $('#cpw').val()}		
 					$.ajax({
 						url : _+'/hcusts/'+data.cid, 
 						type : 'POST',
@@ -103,11 +125,17 @@ auth = (()=>{
 						data: JSON.stringify(data) , 
 						contentType : 'application/json',
 						success : d =>{
-								alert(d.cid + '님 환영합니다.')
-								brd_home(d)
+							$.when(
+									$.getScript(brd_js),		
+									$.getScript(router_js )	
+							).done(()=>{
+								$.extend(new User(d));
+								brd.onCreate()
+							})
+							alert(d.cid + '님 환영합니다.');
 						},
 						error : e =>{
-							alert('AJAX ERROR' )
+							alert('아이디와 비밀번호가 맞지 않습니다.' )
 						}
 					})    
 			}
@@ -116,20 +144,7 @@ auth = (()=>{
 		.appendTo('#btn_login')		
 	}
 	
-	
-	
-	let brd_home = d=>{
-		let x = {css : $.css(), img : $.img(), js:$.js(), resultData: d}
-		$.getScript(brd_vuejs).done(()=>{
-			$('head').html(brd_vue.brd_head(x))
-			$('body').html(brd_vue.brd_body(x))
-		}).fail(()=>{
-			
-		})
-
-	}
-	
-	return {onCreate, join, login,brd_home}
+	return {onCreate, join, login }
 })();
 
 

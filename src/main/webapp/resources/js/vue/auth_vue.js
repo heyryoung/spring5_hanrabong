@@ -104,7 +104,7 @@ auth_vue ={
         '      </form>'+
         '    </div>'+
         '    <div class="col-md-8 order-md-1">'+
-        '      <h4 class="mb-3">Billing address</h4>'+
+    //    '      <h4 class="mb-3">Billing address</h4>'+
         '      <form class="needs-validation" novalidate="">'+
         '        <div class="row">'+
         '          <div class="col-md-6 mb-3">'+
@@ -115,13 +115,18 @@ auth_vue ={
         '            </div>'+
         '          </div>'+
         '          <div class="col-md-6 mb-3">'+
-        '            <label for="cid">Cpw</label>'+
-        '            <input type="text" class="form-control" id="cpw" placeholder="" value="" required="">'+
-        '            <div class="invalid-feedback">'+
-        '              Valid last name is required.'+
-        '            </div>'+
+        '            <label for="dupl_check">ID 중복체크</label>'+
+        '            <input type="text" class="form-control" id="dupl_check" placeholder="" value="" required="">'+
         '          </div>'+
         '        </div>'+
+        
+        '        <div class="mb-3">'+
+        '          <label for="cpw">Cpw</label>'+
+        '          <input type="text" class="form-control" id="cpw" placeholder="" required="">'+
+        '        </div>'+
+        
+        
+        
         '        <div class="mb-3">'+
         '          <label for="cname">cname</label>'+
         '          <div class="input-group">'+

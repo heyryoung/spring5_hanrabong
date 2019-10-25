@@ -35,9 +35,11 @@ public class HCustCtrl {
 	
 	
 	@GetMapping("/{cid}/exist")
-	public String existId(@PathVariable String cid){
+	public Map<?,?> existId(@PathVariable String cid){
 		IFunction<String, Integer> p  =o -> hCustMapper.existId(cid); 
-		return "SUCCESS";
+		map.clear();
+		map.put("msg", (p.apply(cid) == 0) ? "SUCCESS": "FAIL");
+		return map;
 	}
 	
 	
@@ -55,6 +57,9 @@ public class HCustCtrl {
 	@PostMapping("/{cid}")
 	public HCust login(@PathVariable String cid ,@RequestBody HCust param) {
 		IFunction<HCust,HCust> f = t ->  hCustMapper.selectByCidCpw(param); 
+/*		map.clear();
+		map.put("msg", (f.apply(param).getCid() ==null) ? "FAIL" : "SUCCESS");
+		map.put("result", f.apply(param));*/
 		return f.apply(param);
 	}
 	
