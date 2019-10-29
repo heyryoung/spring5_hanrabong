@@ -6,5 +6,6 @@
     </settings>
 <typeAliases>
   <typeAlias alias="hcust" type="com.hanrabong.web.hcust.HCust"/>
+  <typeAlias alias="brd" type="com.hanrabong.web.brd.Brd"/>
 </typeAliases>    
 </configuration>

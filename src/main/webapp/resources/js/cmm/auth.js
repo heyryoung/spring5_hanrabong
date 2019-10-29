@@ -16,6 +16,7 @@ auth = (()=>{
 		init();
 		$.getScript(auth_vuejs).done(()=>{
         	setContentView()
+        	automate()
     		$('#a_go_join').click(e=>{
          		e.preventDefault()
 					$('head').html(auth_vue.join_head())
@@ -65,6 +66,7 @@ auth = (()=>{
 		.addClass('text-center')
 		.html(auth_vue.login_body( {css : $.css(), img : $.img(), js:$.js() }))
 		login()
+		
 	}
 	
 	let join = data=>{
@@ -116,8 +118,10 @@ auth = (()=>{
 			text : "Log In",
 			click: 	e=>{				
 					e.preventDefault()
-				let data = { cid :  $('#cid').val() ,
-						cpw : $('#cpw').val()}		
+				let data = { 
+						cid :  $('#cid').val() ,
+						cpw : $('#cpw').val()
+					}
 					$.ajax({
 						url : _+'/hcusts/'+data.cid, 
 						type : 'POST',
@@ -126,13 +130,13 @@ auth = (()=>{
 						contentType : 'application/json',
 						success : d =>{
 							$.when(
-									$.getScript(brd_js),		
-									$.getScript(router_js )	
+									$.getScript(router_js,$.extend(new User(d))),	
+									$.getScript(brd_js)
+									
 							).done(()=>{
-								$.extend(new User(d));
 								brd.onCreate()
 							})
-							alert(d.cid + '님 환영합니다.');
+							alert(d.cname	 + '님 환영합니다.');
 						},
 						error : e =>{
 							alert('아이디와 비밀번호가 맞지 않습니다.' )
@@ -143,6 +147,13 @@ auth = (()=>{
 		.addClass('btn btn-lg btn-primary btn-block')
 		.appendTo('#btn_login')		
 	}
+	
+	let automate = ()=>{
+			//$('#btn_login').trigger("click")
+			$('#cid').val('leja') ,
+			$('#cpw').val('1214')
+	}
+
 	
 	return {onCreate, join, login }
 })();

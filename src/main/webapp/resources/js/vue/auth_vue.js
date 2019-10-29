@@ -297,9 +297,9 @@ auth_vue ={
 		'    <img class="mb-4" src="'+x.img+'/bootstrap-solid.svg" alt="" width="72" height="72">'+
 		'    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>'+
 		'    <label for="cid" class="sr-only">cid</label>'+
-		'    <input type="text" id="cid" class="form-control" placeholder="" required="" autofocus="">'+
+		'    <input type="text" id="cid" class="form-control" placeholder="" required="" autofocus="" >'+
 		'    <label for="cpw" class="sr-only">cpw</label>'+
-		'    <input type="password" id="cpw" class="form-control" placeholder="" required="">'+
+		'    <input type="password" id="cpw" class="form-control" placeholder="" required="" >'+
 		'    <div class="checkbox mb-3">'+
 		'      <label>'+
 		'        <a id="a_go_join" href="#"> GO JOIN</a>'+
