@@ -10,10 +10,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 
 @Configuration
 @MapperScan(basePackages= {"com.hanrabong.web"})
+//@EnableAspectJAutoProxy
+//@EnableTransactionManagement  // 개념적으로 root가 아닌 mybatis에 선언함. rootconfig에서 mybatis.config를 import하기에  문제 없을 듯.하였으나 문제가 있었다
 public class MybatisConfig {
 		@Autowired 
 		ApplicationContext applicationContext;

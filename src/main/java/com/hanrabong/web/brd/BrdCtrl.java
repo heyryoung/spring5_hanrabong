@@ -66,11 +66,12 @@ public class BrdCtrl {
 	}
 	
 	@DeleteMapping("/{brdseq}")	 //	delete  /  posts /:id		글(posts)을 삭제합니다.(DELETE)
-	public Map<?,?> deleteArticle(@PathVariable String brdseq ,@RequestBody Brd param ){
+	public List<Brd> deleteArticle(@PathVariable String brdseq ,@RequestBody Brd param ){
 		IConsumer<Brd> c = t->brdMapper.delete(param);
 		c.accept(param);
-		map.clear();
-		map.put("msg", "SUCCESS");
-		return map;
+		list.clear();
+		ISupplier<List<Brd>> n = ()-> brdMapper.selectAllArticles();
+		list = (List<Brd>) n.get();
+		return list;
 	}
 }

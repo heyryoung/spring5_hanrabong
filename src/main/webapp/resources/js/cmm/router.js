@@ -12,16 +12,5 @@ function Session(x){
 	}
 }
 
-function User(d){
-	sessionStorage.setItem('cname',d.cname);
-	sessionStorage.setItem('cid',d.cid);
-	sessionStorage.setItem('cnum',d.cnum);
-	return{
-		cname : () =>{return sessionStorage.getItem('cname');},
-		cid : () =>{return sessionStorage.getItem('cid');},
-		cnum : () =>{return sessionStorage.getItem('cnum');}
-	}
-}
-
 
 

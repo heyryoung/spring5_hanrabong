@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import com.zaxxer.hikari.HikariConfig;
@@ -41,5 +42,11 @@ public class RootConfig {
 */		
 		return dataSource;
 	}	
+	
+	@Bean 
+	public DataSourceTransactionManager txManager() {
+		return new DataSourceTransactionManager(dataSource());
+	}
+	
 	
 }

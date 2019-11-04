@@ -2,7 +2,7 @@
 var brd_vue = brd_vue || {}
 brd_vue ={
 		  brd_head:x=>{
-              return '<head>'+
+              return              '<head>'+
               '    <meta charset="utf-8">'+
               '    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">'+
               '    <meta name="description" content="">'+
@@ -34,60 +34,7 @@ brd_vue ={
               '  </head>'
             },
             brd_body: x=>{
-              return  '<body class="bg-light">'+
-              '    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">'+
-              '  <a class="navbar-brand mr-auto mr-lg-0" href="#">'+
-              '<i class="fab fa-angrycreative"></i>'+
-              '</a>'+
-              '  <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">'+
-              '    <span class="navbar-toggler-icon"></span>'+
-              '  </button>'+
-              '  <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">'+
-              '    <ul class="navbar-nav mr-auto">'+
-              '      <li id="ago_write" class="nav-item active">'+
-              '      </li>'+
-              '      <li class="nav-item">'+
-              '        <a class="nav-link" href="#">Notifications</a>'+
-              '      </li>'+
-              '      <li class="nav-item">'+
-              '        <a class="nav-link" href="#">Profile</a>'+
-              '      </li>'+
-              '      <li class="nav-item">'+
-              '        <a class="nav-link" href="#">Switch account</a>'+
-              '      </li>'+
-              '      <li class="nav-item dropdown">'+
-                      '<a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a>'+
-              '        <div class="dropdown-menu" aria-labelledby="dropdown01">'+
-              '          <a class="dropdown-item" href="#">Action</a>'+
-              '          <a class="dropdown-item" href="#">Another action</a>'+
-              '          <a class="dropdown-item" href="#">Something else here</a>'+
-              '        </div>'+
-              '      </li>'+
-              '    </ul>'+
-              '    <form class="form-inline my-2 my-lg-0">'+
-                    '<input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">'+
-              '      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>'+
-              '    </form>'+
-              '  </div>'+
-              '</nav>'+
-              '<div class="nav-scroller bg-white shadow-sm">'+
-              '  <nav class="nav nav-underline">'+
-              '    <a class="nav-link active" href="#" >Dashboard</a>'+
-              '    <a class="nav-link" href="#">'+
-              '      Friends'+
-              '      <span class="badge badge-pill bg-light align-text-bottom">27</span>'+
-              '    </a>'+
-              '    <a class="nav-link" href="#">Explore</a>'+
-              '    <a class="nav-link" href="#">Suggestions</a>'+
-              '    <a class="nav-link" href="#">Link</a>'+
-              '    <a class="nav-link" href="#">Link</a>'+
-              '    <a class="nav-link" href="#">Link</a>'+
-              '    <a class="nav-link" href="#">Link</a>'+
-              '    <a class="nav-link" href="#">Link</a>'+
-              '  </nav>'+
-              '</div>'+
-              '<main role="main" class="container">'+
-                '<div class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm">'+
+          	  return   '<div class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm">'+
                   '<img class="mr-3" src="https://getbootstrap.com/docs/4.3/assets/brand/bootstrap-outline.svg" alt="" width="48" height="48">'+
               '    <div class="lh-100">'+
               '      <h6 class="mb-0 text-white lh-100">  '+x.cname+' 님 어서 오세요! 반갑습니다.</h6>'+
@@ -155,12 +102,7 @@ brd_vue ={
               '    <small class="d-block text-right mt-3">'+
               '      <a href="#">All suggestions</a>'+
               '    </small>'+
-              '  </div>'+
-              '</main>'+
-              '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>'     
-                    '<script src="https://getbootstrap.com/docs/4.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>'+
-              '        <script src="https://getbootstrap.com/docs/4.3/examples/offcanvas/offcanvas.js"></script>'+
-              '</body>'
+              '  </div>'
             },
             brd_body_recentnot: x=>{
                 return  '<body class="bg-light">'+
@@ -268,8 +210,12 @@ brd_vue ={
                 '    </small>'+
                 '  </div>'+
                 '</main>'+
-              //  '<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>'+
-               // '<script src="'+x.js+'/cmm/jquery-3.4.1.min.js"  crossorigin="anonymous"></script>'+
+              // '<script
+				// src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+				// integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+				// crossorigin="anonymous"></script>'+
+               // '<script src="'+x.js+'/cmm/jquery-3.4.1.min.js"
+				// crossorigin="anonymous"></script>'+
                 '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>'                
                       '<script src="https://getbootstrap.com/docs/4.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>'+
                 '        <script src="https://getbootstrap.com/docs/4.3/examples/offcanvas/offcanvas.js"></script>'+
@@ -280,7 +226,8 @@ brd_vue ={
 		    	  return '<div class="container-fluid" style="width:80%">'
 		    	  +'<h1>ARTICLE WRITING</h1>'
 		    	  +'<form id="write_form">'
-		    	  +'<input type="text"  name="writer" style="margin-top:20px" class="form-control" placeholder="" />'//value= "'+x.cname+'"
+		    	  +'<input type="text"  name="writer" style="margin-top:20px" class="form-control" placeholder="" />'// value=
+																														// "'+x.cname+'"
 		    	  +'<div class="row">'
 		    	  +'<div style="width:97%; margin:10px auto" >'
 		    	  +'<textarea name="content" class="form-control" rows="10"></textarea>' 
@@ -288,8 +235,10 @@ brd_vue ={
 		    	  +' </div>'
 		    	  +' <div />'
 		    	  +'<div />'
-		    	  +'<input type="hidden" name="cnum" style="margin-top:20px" class="form-control" placeholder="" />' //value= "'+x.id+'"
-		    	  +'<input type="hidden" name="brdseq" style="margin-top:20px" class="form-control" placeholder="" />' //value= "'+x.id+'"
+		    	  +'<input type="hidden" name="cnum" style="margin-top:20px" class="form-control" placeholder="" />' // value=
+																														// "'+x.id+'"
+		    	  +'<input type="hidden" name="brdseq" style="margin-top:20px" class="form-control" placeholder="" />' // value=
+																														// "'+x.id+'"
 		    	  +'</form>'
 		    	  +'</div>'
 		    	 },

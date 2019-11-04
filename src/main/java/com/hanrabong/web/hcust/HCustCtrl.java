@@ -57,9 +57,6 @@ public class HCustCtrl {
 	@PostMapping("/{cid}")
 	public HCust login(@PathVariable String cid ,@RequestBody HCust param) {
 		IFunction<HCust,HCust> f = t ->  hCustMapper.selectByCidCpw(param); 
-/*		map.clear();
-		map.put("msg", (f.apply(param).getCid() ==null) ? "FAIL" : "SUCCESS");
-		map.put("result", f.apply(param));*/
 		return f.apply(param);
 	}
 	
