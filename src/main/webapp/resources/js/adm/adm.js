@@ -110,12 +110,6 @@ adm = (()=>{
 			}
 		})
 		
-		
-/*		$('#activeCrawler').click(e=>{
-			e.preventDefault()
-			activeCrawler()
-		})*/
-		
 	}	
 
 

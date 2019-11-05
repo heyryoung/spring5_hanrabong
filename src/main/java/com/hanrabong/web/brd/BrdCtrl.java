@@ -1,10 +1,11 @@
 package com.hanrabong.web.brd;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.EmitUtils.ArrayDelimiters;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,29 +16,31 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import com.hanrabong.web.cmm.IConsumer;
-import com.hanrabong.web.cmm.IFunction;
 import com.hanrabong.web.cmm.ISupplier;
-import com.hanrabong.web.hcust.HCust;
-import com.hanrabong.web.hcust.HCustCtrl;
+import com.hanrabong.web.pxy.Proxy;
+import com.hanrabong.web.pxy.ProxyMap;
 import com.hanrabong.web.utl.Printer;
 
-import lombok.extern.log4j.Log4j;
 
 @RestController
 @RequestMapping("/articles")
 public class BrdCtrl {
-	@Autowired Map<String, Object>map;
 	@Autowired List<Brd>list;
 	@Autowired Brd brd;
 	@Autowired Printer printer;
 	@Autowired BrdMapper brdMapper;
+	@Autowired Proxy pxy;
+	@Autowired ProxyMap map;
 	
-	@GetMapping("/") 		//	GET / post	글 목록(posts)을 봅니다(GET)
-	public List<Brd> articleList(){
+	@GetMapping("/page/{pageNo}/size/{pageSize}") 		//	GET / post	글 목록(posts)을 봅니다(GET)
+	public  Map<?,?> articleList(@PathVariable String pageNo, @PathVariable String pageSize){
+		pxy.setPageNum(pxy.parseInt(pageNo));
+		pxy.setPageSize(pxy.parseInt(pageSize));
+		pxy.paging();
 		list.clear();
-		ISupplier<List<Brd>> n = ()-> brdMapper.selectAllArticles();
-		list = (List<Brd>) n.get();
-		return list;
+		ISupplier<List<Brd>> n = ()-> brdMapper.selectBrdArticles(pxy);
+		map.accept(Arrays.asList("articles" , "pages"), Arrays.asList(n.get() , Arrays.asList(1,2,3,4,5)));
+		return map.get();
 	}
 	
 	@GetMapping("/{brdseq}")		 //GET / post	글 (posts)을 봅니다(GET)
@@ -51,9 +54,10 @@ public class BrdCtrl {
 	public Map<?,?> writeArticle(@RequestBody Brd param){
 		IConsumer<Brd> c = t->brdMapper.insertArticle(param);
 		c.accept(param);
-		map.clear();
-		map.put("msg", "SUCCESS");
-		return map;
+		ISupplier<List<Brd>> n = ()-> brdMapper.selectBrdArticles(pxy);		
+		map.accept(Arrays.asList("msg", "SUCCESS") , 
+				Arrays.asList("SUCCESS",n.get()));
+		return map.get();
 	}
 	
 	@PutMapping("/{brdseq}") 	//글(posts)을 수정합니다.(PUT)   
@@ -70,8 +74,8 @@ public class BrdCtrl {
 		IConsumer<Brd> c = t->brdMapper.delete(param);
 		c.accept(param);
 		list.clear();
-		ISupplier<List<Brd>> n = ()-> brdMapper.selectAllArticles();
-		list = (List<Brd>) n.get();
+		//ISupplier<List<Brd>> n = ()-> brdMapper.selectBrdArticles();
+		//list = (List<Brd>) n.get();
 		return list;
 	}
 }

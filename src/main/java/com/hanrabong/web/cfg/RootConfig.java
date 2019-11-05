@@ -22,7 +22,6 @@ import com.zaxxer.hikari.HikariDataSource;
 	MybatisConfig.class, ServletConfig.class
 })
 public class RootConfig {
-	
 	@Bean
 	public DataSource dataSource() {
 	HikariConfig hikariConfig = new HikariConfig();
