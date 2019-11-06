@@ -25,5 +25,15 @@ public class TxController {
 		
 		return txService.crawling(map);		
 	}
+	
+	
+	
+	@GetMapping("/olivecrawling")
+	public List<?> register(){
+		
+		return txService.olivecrawling();		
+	}
+	
+	
 
 }

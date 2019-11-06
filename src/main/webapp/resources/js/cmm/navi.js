@@ -58,6 +58,23 @@ navi =(()=>{
 		.css('float','right')
 		.addClass('nav-link')
 		.appendTo('#logout')	
+		
+             //'      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>'+
+		
+		$('<button>',{
+			href : '#',
+			click : e =>{
+				e.preventDefault()
+				$.getJSON(_+'/search/'+$('input[name="searchWrd"]').val() 
+						,d=>{
+							
+				})				
+				
+			},
+			text: 'Search'
+		})
+		.addClass('btn btn-outline-success my-2 my-sm-0')
+		.appendTo('#searchBtn')		
 	}
 	
 	return {onCreate}

@@ -1,11 +1,13 @@
 package com.hanrabong.web.brd;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.options;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.EmitUtils.ArrayDelimiters;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,9 +39,32 @@ public class BrdCtrl {
 		pxy.setPageNum(pxy.parseInt(pageNo));
 		pxy.setPageSize(pxy.parseInt(pageSize));
 		pxy.paging();
+		System.out.println(">>>>>>>>>>>>>>>>>>"+pxy.random(10, 100));
 		list.clear();
 		ISupplier<List<Brd>> n = ()-> brdMapper.selectBrdArticles(pxy);
-		map.accept(Arrays.asList("articles" , "pages"), Arrays.asList(n.get() , Arrays.asList(1,2,3,4,5)));
+		List<Integer> temp = new ArrayList<>();
+		for (int i = 0;  i < (pxy.getEndPage() - pxy.getStartPage()+1) ; i++) {
+			temp.add(pxy.getStartPage()+i);
+		}
+
+		map.accept(Arrays.asList("articles" , "pageInfo")
+				, Arrays.asList(n.get() , pxy));
+		return map.get();
+	}
+
+	
+	@GetMapping("/search/{searchWrd}") 		//	GET / post	글 목록(posts)을 봅니다(GET)
+	public  Map<?,?> searchWrd(@PathVariable String searchWrd){
+		pxy.paging();
+		list.clear();
+		ISupplier<List<Brd>> n = ()-> brdMapper.selectBrdArticles(pxy);
+		List<Integer> temp = new ArrayList<>();
+		for (int i = 0;  i < (pxy.getEndPage() - pxy.getStartPage()+1) ; i++) {
+			temp.add(pxy.getStartPage()+i);
+		}
+		
+		map.accept(Arrays.asList("articles" , "pageInfo")
+				, Arrays.asList(n.get() , pxy));
 		return map.get();
 	}
 	

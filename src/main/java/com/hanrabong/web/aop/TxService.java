@@ -24,5 +24,12 @@ public class TxService {
 		txServicelist = (List<String>) pxy.crawl(paramMap);
 		return txServicelist;
 	}
+	public List<?> olivecrawling() {
+		List<String> txServicelist = new ArrayList<>();
+		txServicelist.clear();
+		txServicelist = (List<String>) pxy.olivecrawl();
+		System.out.println(txServicelist.toString());
+		return txServicelist;
+	}
 	
 }

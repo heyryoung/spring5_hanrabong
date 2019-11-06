@@ -91,44 +91,9 @@ brd =(()=>{
 			contentList()
 		})
 	}
-	
 	let navigation =()=>{
 		navi.onCreate()
 	}
-	
-
-	let contentList = s =>{
-		var pageNo=1
-		var pageSize=10
-		$('main[class="container"]').html(brd_vue.brd_body({ctx: '/web' , js, cname : getCookie("CNAME") , cid : getCookie("CID") , cnum : getCookie("CNUM")}))
-		$('#recent div[class="media text-muted pt-3"]').remove()
-		$('#recent small[class="d-block text-right mt-3"]').remove()
-		$.ajax({
-			url : '/web/articles/page/'+pageNo+'/size/'+pageSize, 
-			type : 'GET',
-			contentType : 'application/json',
-			success : d =>{
-					pagination(d.pages)
-					$.each(d.articles, ( i , brd)=>{
-						$('<div>',{
-							href : '#'
-						})
-						.append(brd_vue.brd_contentList(brd))
-						.appendTo('#recent')			
-						.click(e=>{
-							e.preventDefault()
-							readArticle(brd)
-						})
-					})// each
-				$('#recent').append( brd_vue.brd_allUpdatest())
-			},
-			error : e =>{
-			}
-		}) 
-		
-
-
-	}// contentList
 	
 	let readArticle = data =>{
 		$('#recent').html(brd_vue.brd_write(data));
@@ -150,7 +115,7 @@ brd =(()=>{
 		.appendTo("#write_form")   
 		.click(e=>{
 			e.preventDefault()
-			contentList(data)
+			contentList()
 		})// click
 	
 		
@@ -212,26 +177,81 @@ brd =(()=>{
 		})// click
 	}// readArticle()
 
-	let pagination=pages=>{
+	let contentList = () =>{
+		var pageNo= ($('input[name="pageNo"]').val() == null ) ? 1 : $('input[name="pageNo"]').val() ;
+		var pageSize=($('select[name="pageSize"]').val() == null ) ? 5 : $('select[name="pageSize"]').val() ;   
+		$('main[class="container"]').html(brd_vue.brd_body({ctx: '/web' , js, cname : getCookie("CNAME") , cid : getCookie("CID") , cnum : getCookie("CNUM")}))
+		$('#recent div[class="media text-muted pt-3"]').remove()
+		$('#recent small[class="d-block text-right mt-3"]').remove()
+		$.ajax({
+			url : '/web/articles/page/'+pageNo+'/size/'+pageSize, 
+			type : 'GET',
+			contentType : 'application/json',
+			success : d =>{
+					pagination(d)
+					$.each(d.articles, ( i , brd)=>{
+						$('<div>',{
+							href : '#'
+						})
+						.append(brd_vue.brd_contentList(brd))
+						.appendTo('#recent')			
+						.click(e=>{
+							e.preventDefault()
+							readArticle(brd)
+						})
+					})// each
+				$('#recent').append( brd_vue.brd_allUpdatest())
+				$('#selectBox')				
+			},
+			error : e =>{
+			}
+		}) 
+	}// contentList	
+	
+	let pagination=d=>{
+
 		$('#pagination').append(page_vue.page_vue_body())
 		var cnt = 0;
-		$.each(pages, (i,j)=>{
-			$('<li class="page-item"><a class="page-link" href="#">'+j+'</a></li>')
+		if(d.pageInfo.existPrev) {$(' <li class="page-item"><a class="page-link" href="#">Previous</a></li>')
+		.appendTo('ul[class="pagination justify-content-center"')
+		.click(e=>{
+			$('input[name="pageNo"]').val(d.pageInfo.blist[0]-5),
+			contentList()
+			})
+		}
+		
+		$.each(d.pageInfo.blist, (i,j)=>{
+			$('<li class="page-item"><a class="page-link"  href="#">'+j+'</a></li>')
 			.appendTo('ul[class="pagination justify-content-center"]')
+			.click(e=>{
+				$('input[name="pageNo"]').val(j)
+				contentList()
+			})
 		})			
 
-		$('    <li class="page-item"><a class="page-link" href="#">Next</a></li>')
-		.appendTo('ul[class="pagination justify-content-center"')
+		if(d.pageInfo.existNext ) {
+			$('    <li class="page-item"><a class="page-link" href="#">Next</a></li>')
+			.appendTo('ul[class="pagination justify-content-center"')
+			.click(e=>{
+				$('input[name="pageNo"]').val(d.pageInfo.blist[0]+5),
+				contentList()
+			})		
+		}
 		
 		$('<form id="sch_form">'+
-				'  <select name="targetSite" size="1" multiple></select>'+
+				'  <select id = "selectBox" name="pageSize" size="1" mutiple></select>'+
 		'</form>')
 		.appendTo('#pagination')
-		
-		$.each([{sub:'5개씩 보기'},{sub:'10개씩 보기'},{sub:'15개씩 보기'},{sub:'25개씩 보기'}],(i,j)=>{
-			$('<option value='+j.sub+'>'+j.sub+'</option>').appendTo('#sch_form select')
+
+		$('#selectBox').change(()=>{
+			contentList()
 		})
 		
+		$.each([{sub:'5개씩 보기' , cnt : 5 },{sub:'10개씩 보기', cnt : 10},{sub:'15개씩 보기', cnt : 15},{sub:'25개씩 보기', cnt : 25}],(i,j)=>{
+			$('<option value='+j.cnt+' >'+j.sub+'</option>').appendTo('#sch_form select')
+		})
+		
+		$('#selectBox > option[value='+d.pageInfo.pageSize+']').attr("selected",true)
 		
 	}	
 	
