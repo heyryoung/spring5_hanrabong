@@ -14,14 +14,9 @@
 	</select>
 
 	<select id="selectBrdArticles" resultType="brd" parameterType="pxy">
-		SELECT R1.* FROM(
-			SELECT * FROM BRD 
+		SELECT * FROM BRD 
 		        order by BRDSEQ desc
-		) R1
 		LIMIT ${startRow}, ${pageSize}
-		
-		
-		
 	</select>
 
 

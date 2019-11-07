@@ -1,7 +1,6 @@
 package com.hanrabong.web.pxy;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -10,12 +9,12 @@ import java.util.function.Function;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import com.hanrabong.web.brd.Brd;
 import com.hanrabong.web.brd.BrdMapper;
 import com.hanrabong.web.cmm.ISupplier;
 
@@ -29,7 +28,10 @@ public class Proxy {
 	private boolean existNext,existPrev;
 	private String search;
 	private final int BLOCK_SIZE = 5;
-	private List<Integer>blist = new ArrayList<>();
+	private List<Integer>blist ;
+	private List<String>plist = new ArrayList<>();
+	private List<String> proxyList;	
+	private List<String> categoryList;	
 	@Autowired BrdMapper brdMapper;
 	
 	public boolean getExistPrev() {
@@ -38,7 +40,7 @@ public class Proxy {
 	public boolean getExistNext() {
 		return this.existNext;
 	}
-	
+	 
 	public void paging() {
 		ISupplier<Integer> s = ()->brdMapper.countAllArticle();
 		totalCount = s.get();
@@ -51,12 +53,12 @@ public class Proxy {
 		endPage = ((pageCount-startPage)<(BLOCK_SIZE) ) ?   pageCount: (startPage + BLOCK_SIZE -1); // 
 		existPrev = (startPage < (BLOCK_SIZE+1) ) ? false : true;  // start Page가 BLOCK_SIZE+1보다 작으면 없음.
 		existNext =  (pageCount == endPage) ? false : true; // 페이지수가 endPage와 같으면 없음.
-		blist.clear();
-		for (int i = 0;  i < (endPage- startPage+1) ; i++) {
-			blist.add(startPage+i);
+		blist = new ArrayList<>();
+		for (int i = startPage;  i < endPage+1 ; i++) {
+			blist.add(i);
 		}
 	}
-	
+	 
 	public int parseInt(String param) {
 		Function<String, Integer> f = s-> Integer.parseInt(s);
 		return f.apply(param);
@@ -65,7 +67,6 @@ public class Proxy {
 	
 	public List<String> crawl(Map<?, ?> paramMap) {
 		String url ="";
-		System.out.println(paramMap.get("targetSite").toString());
 		switch (paramMap.get("targetSite").toString()) {
 		case "google":
 			url = "https://www.google.co.kr/";
@@ -95,25 +96,87 @@ public class Proxy {
 		return proxyList;
 	} 
 	
-	public List<String> olivecrawl() {
+	public List<String> olivecrawl(String categoryNum) {
 
-		List<String> proxyList = new ArrayList<String>();
+		List<String> tempList = new ArrayList<String>();
 		try {
+			for (int pageIndex = 0; pageIndex < 1; pageIndex++) {
+				final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"; 
+				String oliveurl = "http://www.oliveyoung.co.kr/store/display/getMCategoryList.do?dispCatNo="+categoryNum+"&fltDispCatNo=&prdSort=01&pageIdx="+pageIndex+"&rowsPerPage=24&searchTypeSort=btn_thumb" ;
 
-			
-			//System.out.println(temp2.html());
-/*		            temp = soup.find('#artcInfo')
-		          	            b_tag = soup.find("div", {"id": "artcAjaxInfo"})
-		          	            b_tag1 = b_tag.find_all("dl", {"class": "detail_info_list"})[6].find("dd").text
-*/
+				Connection.Response homePage = Jsoup.connect(oliveurl)  
+				     .method(Connection.Method.GET)  
+				     .userAgent(USER_AGENT)  
+				     .execute();
+ 
+				Document temp = homePage.parse();
+				Elements  tempforPName = temp.select("p.tx_name");
+				Elements  tempforCurPrice = temp.select("span.tx_cur");
+				Elements  tempforBrand = temp.select("span.tx_brand");
+				
+				int index =0;
+				for (Element element : tempforPName) {
+					if (index == 12 ) {
+						break;
+					}
+					if(!element.text().contains("(한정판매)")) {  //한정판매 상품 제거
+						tempList.add("제품 이름:    "+element.text().replace("기획", "").replace("[1+1]","").replace("[올리브영 단독]", "").replace("[한정]", "").replace("[온라인단독]","").replace("[닥터자르트]", "")
+								+" 브랜드 :   "+tempforBrand.get(index).text()
+								+ " 가격 :   "+tempforCurPrice.get(index).text() );
+						index++;
+					}
+
+				}
+			}
 			
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}
 				
 		
-		return proxyList;
+		return tempList;
 	} 	
+	
+	
+	public List<String> getCategoty() throws Exception {
+		
+		final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"; 
+		String oliveurl = "http://www.oliveyoung.co.kr/store/main/main.do" ;
+
+		Connection.Response homePage = Jsoup.connect(oliveurl)  
+		     .method(Connection.Method.GET)  
+		     .userAgent(USER_AGENT)  
+		     .execute();		
+		
+		Document temp = homePage.parse();
+		
+		Elements  temp1 = temp.select("ul.all_menu_wrap").select("a");
+		
+		System.out.println(temp1.size() + "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" ); // 카테고리 갯수 
+		
+		List<String> categoryList = new ArrayList<String>();
+		List<String> tempList = new ArrayList<String>();
+		List<String> tempList1 = new ArrayList<String>();
+		for (Element element : temp1) {
+			if (element.attr("data-ref-dispcatno").length() !=11) {
+				categoryList.add(element.attr("data-ref-dispcatno"));
+			}
+		}
+		int index1 =0;
+		for (String element : categoryList) {
+			tempList.clear();
+			tempList = olivecrawl(element);
+			for (String string : tempList) {
+				if (string != null) {
+					tempList1.add(index1, string);  
+					index1++;
+				}
+			}
+		}
+		
+		return tempList1;
+	}
+	
 	
 	public int random(int n , int m) {
 		

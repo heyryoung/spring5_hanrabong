@@ -116,32 +116,26 @@ adm = (()=>{
 	let olivecrawling=()=>{
 		$('#right').empty()
 		$('</br></br><h2>olive Crawling</h2></br></br>'+
-				'<form id="crawl_form" class="form-inline my-2 my-lg-0">'+
-				'<input id= "searchWrd" class="form-control mr-sm-2" type="text" placeholder="insert URL for crawling" aria-label="Search" name ="searchWrd" >'+
-		'</form>')
+				'<div id= "InsertDumpData">'+
+		'</div>')
 		.appendTo('#right')
 		
 		
-		$('#crawl_form input[class="form-control mr-sm-2"]')
-		.css({width:'80%'})
-		
-		$('<button class="btn btn-secondary my-2 my-sm-0" type="submit">go crawl</button>')
-		.appendTo('#crawl_form')
+		$('<button class="btn btn-secondary my-2 my-sm-0" type="submit">InsertDumpData</button>')
+		.appendTo('#InsertDumpData')
 		.click(e=>{
 			e.preventDefault()
 			activeCrawler()			
-			let arr = [$('#crawl_form select[name="site"]').val(),
-				$('#crawl_form input[name="searchWrd"]').val() ]
 				$.getJSON(_+'/tx/olivecrawling'
-						,d=>{$('<br/><div>'+d[0]+'</div>')
-							.appendTo('#cResult')
+						,d=>{
+							var temp = ""
+							$.each(d , (i,j)=>{
+								temp +=j +'<br/>'
+							})
+							$('#cResult').append(temp)	
 						})
 		})
-		
 	}	
-	
-
-	
 	
 	let activeCrawler = () =>{
 		$('#cResult').remove()

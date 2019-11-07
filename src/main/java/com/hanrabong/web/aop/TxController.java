@@ -4,12 +4,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Lazy
 @RestController
 @Transactional
 @RequestMapping("/tx")
@@ -29,9 +31,11 @@ public class TxController {
 	
 	
 	@GetMapping("/olivecrawling")
-	public List<?> register(){
+	public List<?> register() throws Exception{
 		
-		return txService.olivecrawling();		
+		
+		
+		return txService.oliveCategodycrawling();
 	}
 	
 	

@@ -1,7 +1,5 @@
 package com.hanrabong.web.brd;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.options;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -23,84 +21,79 @@ import com.hanrabong.web.pxy.Proxy;
 import com.hanrabong.web.pxy.ProxyMap;
 import com.hanrabong.web.utl.Printer;
 
-
 @RestController
 @RequestMapping("/articles")
 public class BrdCtrl {
-	@Autowired List<Brd>list;
-	@Autowired Brd brd;
-	@Autowired Printer printer;
-	@Autowired BrdMapper brdMapper;
-	@Autowired Proxy pxy;
-	@Autowired ProxyMap map;
-	
-	@GetMapping("/page/{pageNo}/size/{pageSize}") 		//	GET / post	글 목록(posts)을 봅니다(GET)
-	public  Map<?,?> articleList(@PathVariable String pageNo, @PathVariable String pageSize){
+	@Autowired
+	List<Brd> list;
+	@Autowired
+	Brd brd;
+	@Autowired
+	Printer printer;
+	@Autowired
+	BrdMapper brdMapper;
+	@Autowired
+	Proxy pxy;
+	@Autowired
+	ProxyMap map;
+
+	@GetMapping("/page/{pageNo}/size/{pageSize}") // GET / post 글 목록(posts)을 봅니다(GET)
+	public Map<?, ?> articleList(@PathVariable String pageNo, @PathVariable String pageSize) {
 		pxy.setPageNum(pxy.parseInt(pageNo));
 		pxy.setPageSize(pxy.parseInt(pageSize));
 		pxy.paging();
-		System.out.println(">>>>>>>>>>>>>>>>>>"+pxy.random(10, 100));
 		list.clear();
-		ISupplier<List<Brd>> n = ()-> brdMapper.selectBrdArticles(pxy);
-		List<Integer> temp = new ArrayList<>();
-		for (int i = 0;  i < (pxy.getEndPage() - pxy.getStartPage()+1) ; i++) {
-			temp.add(pxy.getStartPage()+i);
-		}
-
-		map.accept(Arrays.asList("articles" , "pageInfo")
-				, Arrays.asList(n.get() , pxy));
+		ISupplier<List<Brd>> n = () -> brdMapper.selectBrdArticles(pxy);
+		map.accept(Arrays.asList("articles", "pageInfo"), Arrays.asList(n.get(), pxy));
 		return map.get();
 	}
 
-	
-	@GetMapping("/search/{searchWrd}") 		//	GET / post	글 목록(posts)을 봅니다(GET)
-	public  Map<?,?> searchWrd(@PathVariable String searchWrd){
+	@GetMapping("/search/{searchWrd}") // GET / post 글 목록(posts)을 봅니다(GET)
+	public Map<?, ?> searchWrd(@PathVariable String searchWrd) {
 		pxy.paging();
 		list.clear();
-		ISupplier<List<Brd>> n = ()-> brdMapper.selectBrdArticles(pxy);
+		ISupplier<List<Brd>> n = () -> brdMapper.selectBrdArticles(pxy);
 		List<Integer> temp = new ArrayList<>();
-		for (int i = 0;  i < (pxy.getEndPage() - pxy.getStartPage()+1) ; i++) {
-			temp.add(pxy.getStartPage()+i);
+		for (int i = 0; i < (pxy.getEndPage() - pxy.getStartPage() + 1); i++) {
+			temp.add(pxy.getStartPage() + i);
 		}
-		
-		map.accept(Arrays.asList("articles" , "pageInfo")
-				, Arrays.asList(n.get() , pxy));
+
+		map.accept(Arrays.asList("articles", "pageInfo"), Arrays.asList(n.get(), pxy));
 		return map.get();
 	}
-	
-	@GetMapping("/{brdseq}")		 //GET / post	글 (posts)을 봅니다(GET)
-	public Brd readArticle (@PathVariable String brdseq ){
-		ISupplier<Brd> n = ()-> brdMapper.selectArticle(brdseq);
+
+	@GetMapping("/{brdseq}") // GET / post 글 (posts)을 봅니다(GET)
+	public Brd readArticle(@PathVariable String brdseq) {
+		ISupplier<Brd> n = () -> brdMapper.selectArticle(brdseq);
 		brd = n.get();
 		return brd;
 	}
 
-	@PostMapping("/")		//POST   / posts	글(posts)을 생성합니다(POST)
-	public Map<?,?> writeArticle(@RequestBody Brd param){
-		IConsumer<Brd> c = t->brdMapper.insertArticle(param);
+	@PostMapping("/") // POST / posts 글(posts)을 생성합니다(POST)
+	public Map<?, ?> writeArticle(@RequestBody Brd param) {
+		IConsumer<Brd> c = t -> brdMapper.insertArticle(param);
 		c.accept(param);
-		ISupplier<List<Brd>> n = ()-> brdMapper.selectBrdArticles(pxy);		
-		map.accept(Arrays.asList("msg", "SUCCESS") , 
-				Arrays.asList("SUCCESS",n.get()));
+		ISupplier<List<Brd>> n = () -> brdMapper.selectBrdArticles(pxy);
+		map.accept(Arrays.asList("msg", "SUCCESS"), Arrays.asList("SUCCESS", n.get()));
 		return map.get();
 	}
-	
-	@PutMapping("/{brdseq}") 	//글(posts)을 수정합니다.(PUT)   
-	public  Brd updateArticle(@PathVariable String brdseq ,@RequestBody Brd param){
-		IConsumer<Brd> c = t->brdMapper.modify(param);
+
+	@PutMapping("/{brdseq}") // 글(posts)을 수정합니다.(PUT)
+	public Brd updateArticle(@PathVariable String brdseq, @RequestBody Brd param) {
+		IConsumer<Brd> c = t -> brdMapper.modify(param);
 		c.accept(param);
-		ISupplier<Brd> n = ()-> brdMapper.selectArticle(param.getBrdseq());
+		ISupplier<Brd> n = () -> brdMapper.selectArticle(param.getBrdseq());
 		brd = n.get();
 		return brd;
 	}
-	
-	@DeleteMapping("/{brdseq}")	 //	delete  /  posts /:id		글(posts)을 삭제합니다.(DELETE)
-	public List<Brd> deleteArticle(@PathVariable String brdseq ,@RequestBody Brd param ){
-		IConsumer<Brd> c = t->brdMapper.delete(param);
+
+	@DeleteMapping("/{brdseq}") // delete / posts /:id 글(posts)을 삭제합니다.(DELETE)
+	public List<Brd> deleteArticle(@PathVariable String brdseq, @RequestBody Brd param) {
+		IConsumer<Brd> c = t -> brdMapper.delete(param);
 		c.accept(param);
 		list.clear();
-		//ISupplier<List<Brd>> n = ()-> brdMapper.selectBrdArticles();
-		//list = (List<Brd>) n.get();
+		// ISupplier<List<Brd>> n = ()-> brdMapper.selectBrdArticles();
+		// list = (List<Brd>) n.get();
 		return list;
 	}
 }
