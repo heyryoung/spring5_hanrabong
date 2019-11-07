@@ -155,11 +155,10 @@ public class Proxy {
 			}
 		}
 		int index1 =0;
-		proxyList.clear();
+		proxyList = new ArrayList<String>();
 		for (String element : tempList) {
-			tempList1.clear();
 			tempList1 = productListCrawl(element);
-			for (String string : tempList) {
+			for (String string : tempList1) {
 				if (string != null) {
 					proxyList.add(index1, string);  
 					index1++;

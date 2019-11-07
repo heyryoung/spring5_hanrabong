@@ -33,8 +33,6 @@ public class TxController {
 	@GetMapping("/olivecrawling")
 	public List<?> register() throws Exception{
 		
-		
-		
 		return txService.oliveCategodycrawling();
 	}
 	
