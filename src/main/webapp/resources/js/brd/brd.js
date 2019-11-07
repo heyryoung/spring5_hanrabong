@@ -209,7 +209,6 @@ brd =(()=>{
 	}// contentList	
 	
 	let pagination=d=>{
-
 		$('#pagination').append(page_vue.page_vue_body())
 		var cnt = 0;
 		if(d.pageInfo.existPrev) {$(' <li class="page-item"><a class="page-link" href="#">Previous</a></li>')
@@ -221,18 +220,27 @@ brd =(()=>{
 		}
 		
 		$.each(d.pageInfo.blist, (i,j)=>{
-			$('<li class="page-item"><a class="page-link"  href="#">'+j+'</a></li>')
-			.appendTo('ul[class="pagination justify-content-center"]')
-			.click(e=>{
-				$('input[name="pageNo"]').val(j)
-				contentList()
-			})
+			if(j != d.pageInfo.pageNum){
+				$('<li class="page-item"><a class="page-link"  href="#">'+j+'</a></li>')
+				.appendTo('ul[class="pagination justify-content-center"]')
+				.click(e=>{
+					e.preventDefault()
+					$('input[name="pageNo"]').val(j)
+					contentList()
+				})
+			}else if(j == d.pageInfo.pageNum){
+				$('<li class="page-item"><a class="page-link"  href="#">'+j+'</a></li>')
+				.appendTo('ul[class="pagination justify-content-center"]')
+				.addClass('active')
+			}
+			
 		})			
 
 		if(d.pageInfo.existNext ) {
 			$('    <li class="page-item"><a class="page-link" href="#">Next</a></li>')
 			.appendTo('ul[class="pagination justify-content-center"')
 			.click(e=>{
+				e.preventDefault()
 				$('input[name="pageNo"]').val(d.pageInfo.blist[0]+5),
 				contentList()
 			})		

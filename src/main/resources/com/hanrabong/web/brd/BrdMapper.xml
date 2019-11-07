@@ -15,7 +15,7 @@
 
 	<select id="selectBrdArticles" resultType="brd" parameterType="pxy">
 		SELECT * FROM BRD 
-		        order by BRDSEQ desc
+		        ORDER BY BRDSEQ DESC
 		LIMIT ${startRow}, ${pageSize}
 	</select>
 

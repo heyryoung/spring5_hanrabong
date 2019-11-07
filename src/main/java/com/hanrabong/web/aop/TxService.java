@@ -12,13 +12,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.hanrabong.web.pxy.Proxy;
+import com.hanrabong.web.pxy.ProxyForCrawling;
 
 @Transactional
 @Service
 @Lazy
 public class TxService {
 	@Autowired TxMapper txMapper;
-	@Autowired Proxy pxy;
+	@Autowired ProxyForCrawling pxy;
 
 	public List<?> crawling(Map<?,?> paramMap) {
 		 List<String> txServicelist = new ArrayList<>();
