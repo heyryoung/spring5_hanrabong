@@ -29,9 +29,7 @@ public class Proxy {
 	private String search;
 	private final int BLOCK_SIZE = 5;
 	private List<Integer>blist ;
-	private List<String>plist = new ArrayList<>();
 	private List<String> proxyList;	
-	private List<String> categoryList;	
 	@Autowired BrdMapper brdMapper;
 	
 	public boolean getExistPrev() {
@@ -64,7 +62,6 @@ public class Proxy {
 		return f.apply(param);
 	}
 	
-	
 	public List<String> crawl(Map<?, ?> paramMap) {
 		String url ="";
 		switch (paramMap.get("targetSite").toString()) {
@@ -81,7 +78,6 @@ public class Proxy {
 			break;
 		}
 
-		List<String> proxyList = new ArrayList<String>();
 		try {
 			Connection.Response response = Jsoup.connect(url).method(Connection.Method.GET).execute();
 			Document document = response.parse();
@@ -91,20 +87,19 @@ public class Proxy {
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}
-				
 		
 		return proxyList;
 	} 
 	
-	public List<String> olivecrawl(String categoryNum) {
+	public List<String> productListCrawl(String categoryNum) {
 
 		List<String> tempList = new ArrayList<String>();
 		try {
 			for (int pageIndex = 0; pageIndex < 1; pageIndex++) {
 				final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36"; 
-				String oliveurl = "http://www.oliveyoung.co.kr/store/display/getMCategoryList.do?dispCatNo="+categoryNum+"&fltDispCatNo=&prdSort=01&pageIdx="+pageIndex+"&rowsPerPage=24&searchTypeSort=btn_thumb" ;
+				String oliveUrl = "http://www.oliveyoung.co.kr/store/display/getMCategoryList.do?dispCatNo="+categoryNum+"&fltDispCatNo=&prdSort=01&pageIdx="+pageIndex+"&rowsPerPage=24&searchTypeSort=btn_thumb" ;
 
-				Connection.Response homePage = Jsoup.connect(oliveurl)  
+				Connection.Response homePage = Jsoup.connect(oliveUrl)  
 				     .method(Connection.Method.GET)  
 				     .userAgent(USER_AGENT)  
 				     .execute();
@@ -128,11 +123,9 @@ public class Proxy {
 
 				}
 			}
-			
 		} catch (Exception e2) {
 			e2.printStackTrace();
 		}
-				
 		
 		return tempList;
 	} 	
@@ -147,34 +140,33 @@ public class Proxy {
 		     .method(Connection.Method.GET)  
 		     .userAgent(USER_AGENT)  
 		     .execute();		
-		
+		 
 		Document temp = homePage.parse();
 		
 		Elements  temp1 = temp.select("ul.all_menu_wrap").select("a");
 		
 		System.out.println(temp1.size() + "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<" ); // 카테고리 갯수 
 		
-		List<String> categoryList = new ArrayList<String>();
 		List<String> tempList = new ArrayList<String>();
 		List<String> tempList1 = new ArrayList<String>();
 		for (Element element : temp1) {
 			if (element.attr("data-ref-dispcatno").length() !=11) {
-				categoryList.add(element.attr("data-ref-dispcatno"));
+				tempList.add(element.attr("data-ref-dispcatno"));
 			}
 		}
 		int index1 =0;
-		for (String element : categoryList) {
-			tempList.clear();
-			tempList = olivecrawl(element);
+		proxyList.clear();
+		for (String element : tempList) {
+			tempList1.clear();
+			tempList1 = productListCrawl(element);
 			for (String string : tempList) {
 				if (string != null) {
-					tempList1.add(index1, string);  
+					proxyList.add(index1, string);  
 					index1++;
 				}
 			}
 		}
-		
-		return tempList1;
+		return proxyList;
 	}
 	
 	
