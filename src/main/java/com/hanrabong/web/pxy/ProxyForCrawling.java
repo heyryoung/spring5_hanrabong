@@ -83,7 +83,7 @@ public class ProxyForCrawling {
 					}
 					
 					if(!element.text().contains("(한정판매)")) {
-						tempList.add("제품 이름:    "+ element.text().replace("기획", "").replace("[1+1]","").replace("[올리브영 단독]", "").replace("[한정]", "").replace("[온라인단독]","").replace("[닥터자르트]", "")
+						tempList.add("제품 이름:    "+ element.text().replace("기획", "").replace("[1+1]","").replace("[올리브영 단독]", "").replace("[한정]", "").replace("[온라인단독]","").replace("[닥터자르트]", "").replace("[업체배송]", "")
 									+" 브랜드 :   "+tempforBrand.get(index).text()
 									+ " 가격 :   "+tempforCurPrice.get(index).text() );
 	//					tempList.removeIf(x -> x.contains("(한정판매)"));
