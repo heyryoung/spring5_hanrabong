@@ -66,7 +66,7 @@ brd =(()=>{
 				type : 'POST',
 				dataType : 'json',
 				data: JSON.stringify(json) , 
-				contentType : 'application/json',
+				contentType : 'application/json', 
 				success : d =>{
 					alert('게시 성공');
 					e.preventDefault()

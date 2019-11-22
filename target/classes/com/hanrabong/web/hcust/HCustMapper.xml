@@ -7,6 +7,11 @@
    	<select id="countHCusts" resultType="int">
 		SELECT COUNT(*) COUNT FROM HCUST 
 	</select>
+   
+   	<select id="selectAll" resultType="hcust">
+		SELECT *  FROM HCUST 
+		where gen like "여"
+	</select>
 
    	<select id="lastCNum" resultType="int">
 		SELECT MAX(CNUM)  CNUM FROM HCUST order by cnum desc

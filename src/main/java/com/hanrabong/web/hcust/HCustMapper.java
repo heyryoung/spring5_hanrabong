@@ -1,5 +1,6 @@
 package com.hanrabong.web.hcust;
 
+import java.util.List;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -8,5 +9,6 @@ public interface HCustMapper {
  public HCust selectByCidCpw(HCust hCust);
  public int lastCNum();
 public int existId(String cid);
+public List<HCust> selectAll();
 		
 }

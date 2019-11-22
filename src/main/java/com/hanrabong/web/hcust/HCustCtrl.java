@@ -1,6 +1,7 @@
 package com.hanrabong.web.hcust;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +34,11 @@ public class HCustCtrl {
 	@Autowired Printer printer;
 	@Autowired HCustMapper hCustMapper;
 	
+	
+	public int lastCNum(){
+		Supplier<Integer> p  =()-> hCustMapper.lastCNum(); 
+		return p.get();
+	}
 	
 	@GetMapping("/{cid}/exist")
 	public Map<?,?> existId(@PathVariable String cid){
